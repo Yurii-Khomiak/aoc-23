@@ -8,6 +8,10 @@ import (
 	"myprojects/aoc/23/aoclib"
 )
 
+const MIN_WORD_NUMBER_LENGTH = 3
+
+var wordNumbers = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+
 func calculatePart1(lines []string) int {
 	res := 0
 	for _, line := range lines {
@@ -19,34 +23,22 @@ func calculatePart1(lines []string) int {
 }
 
 func firstDigit(line string) byte {
-	digit := byte(0)
 	for _, char := range []byte(line) {
 		if isNumber(char) {
-			digit = char
-			break
+			return char
 		}
 	}
-	return digit
+	return '0'
 }
 
 func lastDigit(line string) byte {
-	digit := byte(0)
 	for i := len(line) - 1; i >= 0; i-- {
 		if char := byte(line[i]); isNumber(char) {
-			digit = char
-			break
+			return char
 		}
 	}
-	return digit
+	return '0'
 }
-
-func isNumber(char byte) bool {
-	return char >= '1' && char <= '9'
-}
-
-const MIN_WORD_NUMBER_LENGTH = 3
-
-var wordNumbers = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
 func calculatePart2(lines []string) int {
 	res := 0
@@ -107,6 +99,10 @@ func wordNumberToDigit(line []byte) byte {
 		}
 	}
 	return res
+}
+
+func isNumber(char byte) bool {
+	return char >= '1' && char <= '9'
 }
 
 func main() {
