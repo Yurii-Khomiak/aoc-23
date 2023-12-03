@@ -12,7 +12,7 @@ const MIN_WORD_NUMBER_LENGTH = 3
 
 var wordNumbers = []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
-func calculatePart1(lines []string) int {
+func CalculatePart1(lines []string) int {
 	res := 0
 	for _, line := range lines {
 		digits := [2]byte{firstDigit(line), lastDigit(line)}
@@ -40,7 +40,7 @@ func lastDigit(line string) byte {
 	return '0'
 }
 
-func calculatePart2(lines []string) int {
+func CalculatePart2(lines []string) int {
 	res := 0
 	for _, line := range lines {
 		res += getCalibrationValue(line)
@@ -114,6 +114,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(calculatePart1(lines))
-	fmt.Println(calculatePart2(lines))
+	fmt.Println(CalculatePart1(lines))
+	fmt.Println(CalculatePart2(lines))
 }
