@@ -17,7 +17,7 @@ func TestPart1(t *testing.T) {
 	}
 	expected := 4361
 
-	if v := CalculatePart1(inputLines); v != expected {
+	if v := SolvePart1(inputLines); v != expected {
 		t.Fatalf("Expected: %d\nGot: %d", expected, v)
 	}
 }
@@ -37,7 +37,7 @@ func TestPart2(t *testing.T) {
 	}
 	expected := 467835
 
-	if v := CalculatePart2(inputLines); v != expected {
+	if v := SolvePart2(inputLines); v != expected {
 		t.Fatalf("Expected: %d\nGot: %d", expected, v)
 	}
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"unicode"
 
 	"myprojects/aoc/23/aoclib"
@@ -22,16 +21,21 @@ type Gear struct {
 }
 
 type SchematicNumber struct {
-	row   int
-	left  int
-	right int
+	digits string
+	row    int
+	left   int
+	right  int
 }
 
 func (n SchematicNumber) IsEqualTo(rhs SchematicNumber) bool {
 	return n.row == rhs.row && n.left == rhs.left
 }
 
-func CalculatePart1(lines []string) int {
+func (n SchematicNumber) ToInt() int {
+	return aoclib.ParseInt(n.digits)
+}
+
+func SolvePart1(lines []string) int {
 	res := 0
 	for i := 0; i < len(lines); i++ {
 		line := lines[i]
@@ -45,37 +49,28 @@ func CalculatePart1(lines []string) int {
 			j = num.right
 
 			if isEnginePart(lines, num) {
-				res += parseNumber(line[num.left : num.right+1])
+				res += num.ToInt()
 			}
 		}
 	}
 	return res
 }
 
-func CalculatePart2(lines []string) int {
+func SolvePart2(lines []string) int {
 	res := 0
 	for i := 0; i < len(lines); i++ {
 		for j := 0; j < len(lines[i]); j++ {
-			if !isGear(lines[i][j]) {
+			if !isPossibleGear(lines[i][j]) {
 				continue
 			}
 
 			surrounding := findSurroundingNumbers(lines, Gear{i, j})
 			if len(surrounding) == 2 {
-				res += multiplySchematicNumbers(lines, surrounding)
+				res += surrounding[0].ToInt() * surrounding[1].ToInt()
 			}
 		}
 	}
 	return res
-}
-
-func multiplySchematicNumbers(lines []string, numbers []SchematicNumber) int {
-	product := 1
-	for _, n := range numbers {
-		line := lines[n.row]
-		product *= parseNumber(line[n.left : n.right+1])
-	}
-	return product
 }
 
 func findSurroundingNumbers(lines []string, gear Gear) []SchematicNumber {
@@ -128,7 +123,12 @@ func getSchematicNumber(lines []string, i int, j int) SchematicNumber {
 	}
 	right = k - 1
 
-	return SchematicNumber{row: i, left: left, right: right}
+	return SchematicNumber{
+		digits: line[left : right+1],
+		row:    i,
+		left:   left,
+		right:  right,
+	}
 }
 
 func isEnginePart(lines []string, num SchematicNumber) bool {
@@ -157,28 +157,23 @@ func getSurroundingRectangle(
 	}
 }
 
-func parseNumber(num string) int {
-	parsed, _ := strconv.ParseInt(num, 10, 0)
-	return int(parsed)
-}
-
 func isSymbol(ch byte) bool {
 	return ch != '.' && !unicode.IsDigit(rune(ch))
 }
 
-func isGear(ch byte) bool {
+func isPossibleGear(ch byte) bool {
 	return ch == '*'
 }
 
 func main() {
 	inputFilepath := os.Args[1]
 
-	lines, err := aoclib.ReadFile(inputFilepath)
+	lines, err := aoclib.ReadLines(inputFilepath)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	fmt.Println(CalculatePart1(lines))
-	fmt.Println(CalculatePart2(lines))
+	fmt.Println(SolvePart1(lines))
+	fmt.Println(SolvePart2(lines))
 }

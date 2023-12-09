@@ -2,10 +2,11 @@ package aoclib
 
 import (
 	"os"
+	"strconv"
 	"strings"
 )
 
-func ReadFile(filepath string) ([]string, error) {
+func ReadLines(filepath string) ([]string, error) {
 	content, err := os.ReadFile(filepath)
 	if err != nil {
 		return nil, err
@@ -25,6 +26,11 @@ func Min(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func ParseInt(num string) int {
+	parsed, _ := strconv.ParseInt(num, 10, 0)
+	return int(parsed)
 }
 
 func splitIntoLines(s string) []string {

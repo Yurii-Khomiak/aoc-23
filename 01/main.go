@@ -108,7 +108,7 @@ func isNumber(char byte) bool {
 func main() {
 	inputFilepath := os.Args[1]
 
-	lines, err := aoclib.ReadFile(inputFilepath)
+	lines, err := aoclib.ReadLines(inputFilepath)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
