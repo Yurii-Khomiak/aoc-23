@@ -8,33 +8,41 @@ import (
 	"myprojects/aoc/23/aoclib"
 )
 
-func SolvePart1(games []string) int {
-	res := 0
-	for _, game := range games {
-		winning, ours := parseGame(game)
-		n := numberOfMatches(winning, ours)
-		res += aoclib.PowInt(2, n-1)
-	}
-	return res
+func SolvePart1(games []string) chan int {
+	ch := make(chan int)
+	go func() {
+		res := 0
+		for _, game := range games {
+			winning, ours := parseGame(game)
+			n := numberOfMatches(winning, ours)
+			res += aoclib.PowInt(2, n-1)
+		}
+		ch <- res
+	}()
+	return ch
 }
 
-func SolvePart2(games []string) int {
-	res := 0
-	copies := make([]int, len(games))
-	for i, game := range games {
-		cardsCount := copies[i] + 1
+func SolvePart2(games []string) chan int {
+	ch := make(chan int)
+	go func() {
+		res := 0
+		copies := make([]int, len(games))
+		for i, game := range games {
+			cardsCount := copies[i] + 1
 
-		winning, ours := parseGame(game)
-		n := numberOfMatches(winning, ours)
+			winning, ours := parseGame(game)
+			n := numberOfMatches(winning, ours)
 
-		end := aoclib.Min(i+n+1, len(games))
-		for j := i + 1; j < end; j++ {
-			copies[j] += cardsCount
+			end := aoclib.Min(i+n+1, len(games))
+			for j := i + 1; j < end; j++ {
+				copies[j] += cardsCount
+			}
+
+			res += cardsCount
 		}
-
-		res += cardsCount
-	}
-	return res
+		ch <- res
+	}()
+	return ch
 }
 
 func parseGame(game string) ([]string, []string) {
@@ -66,6 +74,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(SolvePart1(lines))
-	fmt.Println(SolvePart2(lines))
+	part1, part2 := SolvePart1(lines), SolvePart2(lines)
+
+	fmt.Println(<-part1, <-part2)
 }
