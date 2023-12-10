@@ -47,6 +47,14 @@ func Contains[T comparable](s []T, v T) bool {
 	return false
 }
 
+func MakeChannels[T any](n int) []chan T {
+	channels := make([]chan T, 0, n)
+	for i := 0; i < cap(channels); i++ {
+		channels = append(channels, make(chan T))
+	}
+	return channels
+}
+
 func splitIntoLines(s string) []string {
 	res := strings.Split(s, "\n")
 	if last := len(res) - 1; len(res[last]) == 0 {
