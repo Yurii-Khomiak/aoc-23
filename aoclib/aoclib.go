@@ -1,6 +1,7 @@
 package aoclib
 
 import (
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -31,6 +32,19 @@ func Min(x, y int) int {
 func ParseInt(num string) int {
 	parsed, _ := strconv.ParseInt(num, 10, 0)
 	return int(parsed)
+}
+
+func PowInt(x, y int) int {
+	return int(math.Pow(float64(x), float64(y)))
+}
+
+func Contains[T comparable](s []T, v T) bool {
+	for _, el := range s {
+		if el == v {
+			return true
+		}
+	}
+	return false
 }
 
 func splitIntoLines(s string) []string {
